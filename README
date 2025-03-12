@@ -1,0 +1,8 @@
+1. BUILD
+docker build -t my-fastapi-app .
+
+2. RUN
+docker run -d -p 8000:8000 --name fastapi-container my-fastapi-app
+
+3. ACCESS
+http://localhost:8000/
