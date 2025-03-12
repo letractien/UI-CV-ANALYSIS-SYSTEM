@@ -1,8 +1,37 @@
-1. BUILD
-docker build -t my-fastapi-app .
+1. Cài đặt Docker
+Đảm bảo rằng bạn đã cài đặt Docker và Docker Compose trên máy của mình.
+Bạn có thể tải Docker từ trang chủ Docker.
 
-2. RUN
-docker run -d -p 8000:8000 --name fastapi-container my-fastapi-app
+2. Xây dựng Docker image
+Mở terminal và di chuyển đến thư mục gốc của dự án.
+Chạy lệnh sau để xây dựng Docker image: 
+    docker-compose build
 
-3. ACCESS
-http://localhost:8000/
+3. Chạy ứng dụng
+Sau khi xây dựng xong Docker image, chạy lệnh sau để khởi động ứng dụng, ứng dụng sẽ chạy trên cổng 8000:
+    docker-compose up
+
+4. Truy cập ứng dụng
+Mở trình duyệt và truy cập địa chỉ sau để xem ứng dụng:
+    http://localhost:8000
+
+5. Dừng ứng dụng
+Để dừng ứng dụng, nhấn Ctrl + C trong terminal đang chạy docker-compose up.
+Hoặc bạn có thể chạy lệnh sau trong một terminal khác:
+    docker-compose down
+
+6. Xóa Docker container và image
+Lệnh này sẽ dừng và xóa tất cả các container, đồng thời xóa các Docker image liên quan.
+Để xóa các container và image đã tạo, chạy lệnh sau:
+    docker-compose down --rmi all
+
+7. Truy cập vào container
+Nếu bạn cần truy cập vào container để kiểm tra hoặc debug, chạy lệnh sau:
+    docker exec -it <container_id> /bin/bash
+
+Thay <container_id> bằng ID của container bạn muốn truy cập. Bạn có thể lấy ID container bằng lệnh:
+    docker ps
+
+8. Xem logs
+Để xem logs của ứng dụng, chạy lệnh sau:
+    docker-compose logs -f
