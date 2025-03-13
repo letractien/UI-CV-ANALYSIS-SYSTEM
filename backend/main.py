@@ -6,9 +6,9 @@ from fastapi.staticfiles import StaticFiles
 app = FastAPI()
 app.mount("/frontend", StaticFiles(directory="./frontend"), name="frontend")
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/index", response_class=HTMLResponse)
 async def read_root():
-    with open("./frontend/resources/index.html", "r", encoding="utf-8") as file:
+    with open("./frontend/resources/job.html", "r", encoding="utf-8") as file:
         html_content = file.read()
     return HTMLResponse(content=html_content)
 
