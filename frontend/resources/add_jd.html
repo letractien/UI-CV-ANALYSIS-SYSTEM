@@ -9,7 +9,7 @@
     <script>
         async function fetchData() {
             try {
-                let response = await fetch("http://localhost:8000/get_eval");
+                let response = await fetch("http://localhost:8000/geteval");
                 if (!response.ok) throw new Error("Lỗi khi lấy dữ liệu");
 
                 let result = await response.json();
@@ -56,9 +56,9 @@
             <i class="fas fa-bell"></i>
         </button>
     </header>
-    
+
     <div class="d-flex">
-        <aside class="bg-light p-3" style="min-width: 250px;">
+        <aside class="bg-light p-3" style="min-width: 250px; height: calc(100vh - 80px);">
             <div class="text-center mb-3">
                 <img src="./frontend/static/image/face.jpg" class="rounded-circle" width="50" height="50">
                 <h5 class="mt-2">Garo</h5>
@@ -66,10 +66,7 @@
             </div>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a href="job.html" class="nav-link d-flex align-items-center gap-2 active"><i class="fas fa-briefcase"></i> Job description</a>
-                </li>
-                <li class="nav-item">
-                    <a href="dashboard.html" class="nav-link text-dark d-flex align-items-center gap-2 active"><i class="fas fa-chart-line"></i> Dashboard</a>
+                    <a href="dashboard.html" class="nav-link d-flex align-items-center gap-2 active"><i class="fas fa-chart-line"></i> Dashboard</a>
                 </li>
                 <li class="nav-item">
                     <a href="candidate.html" class="nav-link text-dark d-flex align-items-center gap-2"><i class="fas fa-users"></i> Candidate</a>
@@ -78,7 +75,7 @@
                     <a href="calendar.html" class="nav-link text-dark d-flex align-items-center gap-2"><i class="fas fa-calendar-alt"></i> Calendar</a>
                 </li>
             </ul>
-            <ul class="nav flex-column position-absolute bottom-0 start-0 w-100 p-3">
+            <ul class="nav flex-column position-absolute bottom-0 start-0 p-3">
                 <li class="nav-item">
                     <a href="#" class="nav-link text-dark d-flex align-items-center gap-2">
                         <i class="fas fa-user"></i>
@@ -94,7 +91,7 @@
             </ul>
         </aside>
 
-        <main class="container p-4">
+        <main class="container p-4" style="overflow-y: auto; height: calc(100vh - 80px);">
             <h1 class="mb-4">Job Description</h1>
             <form onsubmit="submitForm(event)">
                 <div class="mb-3">
