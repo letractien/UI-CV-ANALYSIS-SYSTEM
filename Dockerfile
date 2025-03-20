@@ -4,14 +4,15 @@ FROM python:3.9-slim
 # Đặt thư mục làm việc
 WORKDIR /app
 
-# Sao chép requirements.txt vào thư mục làm việc
-COPY requirements.txt .
+# Sao chép file requirements.txt vào thư mục làm việc
+COPY backend/requirements.txt .
 
 # Cài đặt các phụ thuộc Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Sao chép toàn bộ dự án vào thư mục làm việc
-COPY . .
+# Sao chép toàn bộ thư mục backend và frontend vào thư mục làm việc
+COPY backend /app/backend
+COPY frontend /app/frontend
 
 # Expose cổng mà ứng dụng sẽ chạy
 EXPOSE 8000
