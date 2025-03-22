@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Description</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">    
+</head>
+<body>
+    <header class="d-flex justify-content-between align-items-center p-2 bg-light border-bottom">
+        <div class="d-flex align-items-center">
+            <img src="/frontend/static/image/logo.png" alt="Company Logo" width="40" height="40" class="me-2">
+            <h5 class="m-0">LT Company</h5>
+        </div>
+        <button class="btn btn-outline-secondary">
+            <i class="fas fa-bell"></i>
+        </button>
+    </header>
+
+    <div class="d-flex">
+        <aside class="bg-light p-3" style="min-width: 250px; height: calc(100vh - 75px);">
+            <div class="text-center mb-3">
+                <img src="/frontend/static/image/face.jpg" class="rounded-circle" width="50" height="50">
+                <h5 class="mt-2">Garo</h5>
+                <p class="text-muted">HR Manager</p>
+            </div>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a href="/" class="nav-link text-dark d-flex align-items-center gap-2"><i class="fas fa-chart-line"></i>Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/job" class="nav-link d-flex align-items-center gap-2 active"><i class="fas fa-users"></i>Job</a>
+                </li>
+            </ul>
+            <ul class="nav flex-column position-absolute bottom-0 start-0 p-3">
+                <li class="nav-item">
+                    <a href="#" class="nav-link text-dark d-flex align-items-center gap-2">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link text-dark d-flex align-items-center gap-2">
+                        <i class="fas fa-cog"></i>
+                        <span>Setting</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="container p-2" style="overflow-y: auto; height: calc(100vh - 75px);">
+            <div class="card p-2">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <input type="text" class="form-control w-25" placeholder="Search...">
+                </div>
+                <table class="table table-striped table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 5%;">#</th>
+                            <th style="width: 30%;">Name/Email</th>
+                            <th style="width: 25%;">Job Apply</th>
+                            <th style="width: 10%;">Score</th>
+                            <th style="width: 10%;">Status</th>
+                            <th style="width: 10%;">Response</th>
+                            <th style="width: 10%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="candidate-list">
+                        <tr>
+                            <td colspan="7" class="text-center">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("http://localhost:8000/getcvs")
+                .then(response => {
+                    if (!response.ok) throw new Error("Lỗi khi lấy dữ liệu: " + response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    const candidates = data.data || [];
+                    const tableBody = document.querySelector("#candidate-list");
+                    tableBody.innerHTML = ""; // Xóa dữ liệu cũ
+    
+                    candidates.forEach((candidate, index) => {
+                        const row = `
+                            <tr>
+                                <td class="text-wrap text-break">${index + 1}</td>
+                                <td class="text-wrap text-break">
+                                    <span>Name</span><br>
+                                    <small class="text-muted">${candidate.gmail}</small>
+                                </td>
+                                <td class="text-wrap text-break">${candidate.job}</td>
+                                <td class="text-wrap text-break">${Math.floor(Math.random() * 50) + 50}/100</td>
+                                <td class="text-wrap text-break">
+                                    <span class="badge bg-${index % 2 === 0 ? 'primary' : 'secondary'}">Pending</span>
+                                </td>
+                                <td class="text-wrap text-break">
+                                    <span class="badge bg-${index % 2 === 0 ? 'primary' : 'secondary'}">
+                                        ${index % 2 === 0 ? 'Done' : 'Already'}
+                                    </span>
+                                </td>
+                                <td class="text-wrap text-break">
+                                    <a href="/detailjob/${candidate.id}" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-info-circle"></i>
+                                    </a>
+                                    <a href="/editjob/${candidate.id}" class="btn btn-sm btn-outline-secondary">
+                                        <i class="fa fa-envelope"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        `;
+                        tableBody.innerHTML += row;
+                    });
+                })
+                .catch(error => console.error("Lỗi khi tải dữ liệu:", error));
+        });
+    </script>
+    
+</body>
+</html>

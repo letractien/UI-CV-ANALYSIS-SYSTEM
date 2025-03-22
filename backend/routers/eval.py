@@ -8,6 +8,7 @@ router = APIRouter()
 async def get_eval():
     try:
         response = requests.get("https://zep.hcmute.fit/7778/get_eval")
+        print(response)
         if response.status_code == 200:
             data = response.json()
             return JSONResponse(content=data)
