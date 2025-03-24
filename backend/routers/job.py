@@ -46,7 +46,8 @@ async def get_ui_edit_job(job_id: int):
     return HTMLResponse(content=html_content)
 @router.get("/email/{job_id}", response_class=HTMLResponse)
 async def get_ui_detail_job(job_id: int):
-    with open("./frontend/resources//email.html", "r", encoding="utf-8") as file:
+    with open("./frontend/resources/email.html", "r", encoding="utf-8") as file:
         html_content = file.read()
     return HTMLResponse(content=html_content)
+
 
