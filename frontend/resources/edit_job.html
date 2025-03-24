@@ -120,26 +120,43 @@
         }
     </script>
     <script>
+        function getJobNameFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const nameParam = urlParams.get('name');
+            return nameParam ? decodeURIComponent(nameParam) : '';
+        }
+    
         async function fetchData() {
             try {
                 let response = await fetch("http://localhost:8000/geteval");
                 if (!response.ok) throw new Error("Lỗi khi lấy dữ liệu");
-
+    
                 let result = await response.json();
                 let data = result.data;
-
-                data.forEach(item => {
-                    addCriterion(item.category.toLowerCase(), item.criterion, item.score);
+    
+                // Lấy job name từ URL
+                const jobName = getJobNameFromURL();
+                console.log("Job Name from URL:", jobName);
+    
+                // Gán tên JD vào ô input
+                document.getElementById("name").value = jobName;
+    
+                // Lọc dữ liệu theo job name
+                const filteredData = data.filter(item => item.job === jobName);
+    
+                // Hiển thị các tiêu chí theo category
+                filteredData.forEach(item => {
+                    addCriterion(item.category.toLowerCase(), item.criterion.trim(), item.score);
                 });
             } catch (error) {
                 console.error("Lỗi:", error);
             }
         }
-
+    
         function addCriterion(sectionId, criterion = "", point = 1) {
             let section = document.getElementById(sectionId);
             if (!section) return;
-            
+    
             let div = document.createElement("div");
             div.className = "mb-3 d-flex align-items-center gap-2 criterion-row";
             div.innerHTML = `
@@ -151,12 +168,13 @@
             `;
             section.appendChild(div);
         }
-
+    
         function removeCriterion(button) {
             button.parentElement.remove();
         }
-
+    
         window.onload = fetchData;
     </script>
+    
 </body>
 </html>

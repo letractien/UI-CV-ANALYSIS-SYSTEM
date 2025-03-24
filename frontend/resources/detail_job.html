@@ -107,7 +107,7 @@
                         : candidates;
     
                     if (filteredCandidates.length === 0) {
-                        tableBody.innerHTML = `<tr><td colspan="7" class="text-center">Không có ứng viên nào.</td></tr>`;
+                        tableBody.innerHTML = `<tr><td colspan="7" class="text-center">There are no candidates.</td></tr>`;
                     } else {
                         filteredCandidates.forEach((candidate, index) => {
                             const row = `
@@ -131,7 +131,7 @@
                                         <a href="/detailjob/${candidate.id}?name=${encodeURIComponent(candidate.job)}" class="btn btn-sm btn-outline-primary">
                                             <i class="fas fa-info-circle"></i>
                                         </a>
-                                        <a href="/editjob/${candidate.id}" class="btn btn-sm btn-outline-secondary">
+                                        <a href="/email/${candidate.id}" class="btn btn-sm btn-outline-secondary">
                                             <i class="fa fa-envelope"></i>
                                         </a>
                                     </td>
