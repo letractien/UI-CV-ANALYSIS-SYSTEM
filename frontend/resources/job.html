@@ -100,10 +100,10 @@
                                 <td class="text-wrap text-break">${job.total_cvs}</td>
                                 <td class="text-wrap text-break">${job.total_processed_cv}</td>
                                 <td class="text-wrap text-break">
-                                    <a href="/detailjob/${job.id}" class="btn btn-sm btn-outline-primary">
+                                    <a href="/detailjob/${job.id}?name=${encodeURIComponent(job.name)}" class="btn btn-sm btn-outline-primary">
                                         <i class="fas fa-info-circle"></i>
                                     </a>
-                                    <a href="/editjob/${job.id}" class="btn btn-sm btn-outline-secondary">
+                                    <a href="/editjob/${job.id}?name=${encodeURIComponent(job.name)}" class="btn btn-sm btn-outline-secondary">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                 </td>

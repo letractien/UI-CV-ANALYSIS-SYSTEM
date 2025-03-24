@@ -78,6 +78,19 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            // ✅ Lấy tên job từ URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const jobName = decodeURIComponent(urlParams.get('name') || '').trim();
+    
+            // ✅ Thêm dòng hiển thị tên Job (nếu có)
+            const mainContainer = document.querySelector("main .card");
+            if (jobName) {
+                const jobTitle = document.createElement("h3");
+                jobTitle.classList.add("mb-3");
+                jobTitle.textContent = "Job: " + jobName;
+                mainContainer.prepend(jobTitle);
+            }
+    
             fetch("http://localhost:8000/getcvs")
                 .then(response => {
                     if (!response.ok) throw new Error("Lỗi khi lấy dữ liệu: " + response.status);
@@ -88,40 +101,50 @@
                     const tableBody = document.querySelector("#candidate-list");
                     tableBody.innerHTML = ""; // Xóa dữ liệu cũ
     
-                    candidates.forEach((candidate, index) => {
-                        const row = `
-                            <tr>
-                                <td class="text-wrap text-break">${index + 1}</td>
-                                <td class="text-wrap text-break">
-                                    <span>Name</span><br>
-                                    <small class="text-muted">${candidate.gmail}</small>
-                                </td>
-                                <td class="text-wrap text-break">${candidate.job}</td>
-                                <td class="text-wrap text-break">${Math.floor(Math.random() * 50) + 50}/100</td>
-                                <td class="text-wrap text-break">
-                                    <span class="badge bg-${index % 2 === 0 ? 'primary' : 'secondary'}">Pending</span>
-                                </td>
-                                <td class="text-wrap text-break">
-                                    <span class="badge bg-${index % 2 === 0 ? 'primary' : 'secondary'}">
-                                        ${index % 2 === 0 ? 'Done' : 'Already'}
-                                    </span>
-                                </td>
-                                <td class="text-wrap text-break">
-                                    <a href="/detailjob/${candidate.id}" class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-info-circle"></i>
-                                    </a>
-                                    <a href="/editjob/${candidate.id}" class="btn btn-sm btn-outline-secondary">
-                                        <i class="fa fa-envelope"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                        `;
-                        tableBody.innerHTML += row;
-                    });
+                    // ✅ Lọc theo jobName nếu có
+                    const filteredCandidates = jobName
+                        ? candidates.filter(candidate => candidate.job === jobName)
+                        : candidates;
+    
+                    if (filteredCandidates.length === 0) {
+                        tableBody.innerHTML = `<tr><td colspan="7" class="text-center">Không có ứng viên nào.</td></tr>`;
+                    } else {
+                        filteredCandidates.forEach((candidate, index) => {
+                            const row = `
+                                <tr>
+                                    <td class="text-wrap text-break">${index + 1}</td>
+                                    <td class="text-wrap text-break">
+                                        <span>${candidate.name || 'Name'}</span><br>
+                                        <small class="text-muted">${candidate.gmail}</small>
+                                    </td>
+                                    <td class="text-wrap text-break">${candidate.job}</td>
+                                    <td class="text-wrap text-break">${Math.floor(Math.random() * 50) + 50}/100</td>
+                                    <td class="text-wrap text-break">
+                                        <span class="badge bg-${index % 2 === 0 ? 'primary' : 'secondary'}">Pending</span>
+                                    </td>
+                                    <td class="text-wrap text-break">
+                                        <span class="badge bg-${index % 2 === 0 ? 'primary' : 'secondary'}">
+                                            ${index % 2 === 0 ? 'Done' : 'Already'}
+                                        </span>
+                                    </td>
+                                    <td class="text-wrap text-break">
+                                        <a href="/detailjob/${candidate.id}?name=${encodeURIComponent(candidate.job)}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-info-circle"></i>
+                                        </a>
+                                        <a href="/editjob/${candidate.id}" class="btn btn-sm btn-outline-secondary">
+                                            <i class="fa fa-envelope"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            `;
+                            tableBody.innerHTML += row;
+                        });
+                    }
                 })
                 .catch(error => console.error("Lỗi khi tải dữ liệu:", error));
         });
     </script>
+    
     
 </body>
 </html>
