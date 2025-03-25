@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse, JSONResponse
-from backend.services.job_service import fetch_jobs,fetch_ttjobs
+from backend.services.job_service import fetch_jobs, fetch_ttjobs, fetch_eval, add_job
 
 router = APIRouter()
 
@@ -12,12 +12,14 @@ async def get_jobs():
 async def get_ttjobs():
     return await fetch_ttjobs()
 
+@router.get("/geteval", response_class=JSONResponse)
+async def get_eval():
+    return await fetch_eval()
+
 @router.post("/addjob", response_class=JSONResponse)
 async def post_add_job(request: Request):
     data = await request.json()
-    job_name = data.get("name")
-    result = {"status": "success", "message": f"Job '{job_name}' added successfully!"}
-    return JSONResponse(content=result)
+    return await add_job(data)
 
 
 

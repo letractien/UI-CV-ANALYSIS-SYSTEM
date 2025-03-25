@@ -71,8 +71,8 @@
                 </div>
                 <div class="flex-grow-1 ms-0 me-0" style="flex-basis: 20%;">
                     <div class="card p-3">
-                        <h6>JD active</h6>
-                        <h2 id="total-jd">0</h2>
+                        <h6>Job active</h6>
+                        <h2 id="total-job">0</h2>
                     </div>
                 </div>
             </div>            
@@ -98,7 +98,7 @@
                 .then(response => response.json())
                 .then(data => {
                     const total = data.data;
-                    document.getElementById("total-jd").textContent = total;
+                    document.getElementById("total-job").textContent = total;
                 })
                 .catch(error => console.error("Lỗi khi lấy tổng CV:", error));
         });
