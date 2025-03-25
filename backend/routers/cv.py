@@ -11,4 +11,9 @@ async def get_totalcv():
 @router.get("/getcvs", response_class=JSONResponse)
 async def get_cvs():
     return await fetch_cvs()
+@router.get("/detailcv/{job_id}", response_class=HTMLResponse)
+async def get_ui_edit_job(job_id: int):
+    with open("./frontend/resources/detail_cv.html", "r", encoding="utf-8") as file:
+        html_content = file.read()
+    return HTMLResponse(content=html_content)
 

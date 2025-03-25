@@ -91,10 +91,10 @@
         // Lấy param trên URL
         const urlParams = new URLSearchParams(window.location.search);
         const gmailParam = urlParams.get('gmail');
-        const emailFromUrl = decodeURIComponent(urlParams.get('gmail') || '').trim();
+        const emailFromUrl = decodeURIComponent(gmailParam);
 
         // In ra email lấy được từ URL
-        //console.log('Email từ URL:', emailFromUrl);
+        console.log('Email từ URL:', emailFromUrl);
 
         // Hàm fetch data và đổ vào form
         async function fetchAndFillData() {

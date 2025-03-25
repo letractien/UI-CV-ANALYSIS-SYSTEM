@@ -78,11 +78,9 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // ✅ Lấy tên job từ URL
             const urlParams = new URLSearchParams(window.location.search);
             const jobName = decodeURIComponent(urlParams.get('name') || '').trim();
     
-            // ✅ Thêm dòng hiển thị tên Job (nếu có)
             const mainContainer = document.querySelector("main .card");
             if (jobName) {
                 const jobTitle = document.createElement("h3");
@@ -101,7 +99,6 @@
                     const tableBody = document.querySelector("#candidate-list");
                     tableBody.innerHTML = ""; // Xóa dữ liệu cũ
     
-                    // ✅ Lọc theo jobName nếu có
                     const filteredCandidates = jobName
                         ? candidates.filter(candidate => candidate.job === jobName)
                         : candidates;
@@ -128,7 +125,7 @@
                                         </span>
                                     </td>
                                     <td class="text-wrap text-break">
-                                        <a href="/detailjob/${candidate.id}?name=${encodeURIComponent(candidate.job)}" class="btn btn-sm btn-outline-primary">
+                                        <a href="/detailcv/${candidate.id}" class="btn btn-sm btn-outline-primary">
                                             <i class="fas fa-info-circle"></i>
                                         </a>
                                         <a href="/email/${candidate.id}?gmail=${encodeURIComponent(candidate.gmail)}" class="btn btn-sm btn-outline-secondary">
