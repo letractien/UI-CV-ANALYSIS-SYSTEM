@@ -53,6 +53,10 @@
             <div class="card p-2">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <input type="text" class="form-control w-25" placeholder="Search...">
+                    <!-- Nút Add CV -->
+                    <button id="add-cv-btn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add CV
+                    </button>
                 </div>
                 <table class="table table-striped table-bordered table-hover">
                     <thead class="table-light">
@@ -80,7 +84,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             const urlParams = new URLSearchParams(window.location.search);
             const jobName = decodeURIComponent(urlParams.get('name') || '').trim();
-    
+
             const mainContainer = document.querySelector("main .card");
             if (jobName) {
                 const jobTitle = document.createElement("h3");
@@ -88,7 +92,7 @@
                 jobTitle.textContent = "Job: " + jobName;
                 mainContainer.prepend(jobTitle);
             }
-    
+
             fetch("http://localhost:8000/getcvs")
                 .then(response => {
                     if (!response.ok) throw new Error("Lỗi khi lấy dữ liệu: " + response.status);
@@ -98,11 +102,11 @@
                     const candidates = data.data || [];
                     const tableBody = document.querySelector("#candidate-list");
                     tableBody.innerHTML = ""; // Xóa dữ liệu cũ
-    
+
                     const filteredCandidates = jobName
                         ? candidates.filter(candidate => candidate.job === jobName)
                         : candidates;
-    
+
                     if (filteredCandidates.length === 0) {
                         tableBody.innerHTML = `<tr><td colspan="7" class="text-center">There are no candidates.</td></tr>`;
                     } else {
@@ -139,9 +143,38 @@
                     }
                 })
                 .catch(error => console.error("Lỗi khi tải dữ liệu:", error));
+
+            // Xử lý nút Add CV gửi JSON chứa job name về server
+            document.getElementById("add-cv-btn").addEventListener("click", function () {
+                if (!jobName) {
+                    alert("Không có job name trên URL, không thể thêm CV!");
+                    return;
+                }
+
+                const data = { job_name: jobName };
+
+                fetch("http://localhost:8000/add_cv", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert("Đã gửi CV thành công!");
+                        // Có thể reload hoặc làm hành động khác
+                        window.location.reload();
+                    } else {
+                        alert("Gửi CV thất bại!");
+                    }
+                })
+                .catch(error => {
+                    console.error("Lỗi khi gửi CV:", error);
+                    alert("Lỗi khi gửi CV");
+                });
+            });
         });
     </script>
-    
-    
 </body>
 </html>

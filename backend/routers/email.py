@@ -10,7 +10,7 @@ async def get_email():
     return await fetch_email()
 
 
-
+ 
 
 @router.api_route("/send_email", methods=["GET", "POST"])
 async def receive_email(request: Request):
@@ -19,5 +19,16 @@ async def receive_email(request: Request):
     # Gửi dữ liệu sang máy khác
     async with httpx.AsyncClient() as client:
         response = await client.post("https://zep.hcmute.fit/7778/send_email", json=data)
+    
+    return {"message": "Email forwarded", "response": response.json()}
+
+@router.api_route("/add_cv", methods=["GET", "POST"])
+async def receive_email(request: Request):
+    data = await request.json()
+    print (data)
+    
+    # Gửi dữ liệu sang máy khác
+    async with httpx.AsyncClient() as client:
+        response = await client.post("https://zep.hcmute.fit/7778/add_cv", json=data)
     
     return {"message": "Email forwarded", "response": response.json()}
