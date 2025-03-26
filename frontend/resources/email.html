@@ -54,7 +54,7 @@
 
         <main class="container p-4">
             <h1 class="mb-4">Email</h1>
-            <form>
+            <form id="emailForm">
                 <div class="mb-3">
                     <label for="name" class="form-label">JD</label>
                     <input type="text" class="form-control" id="name" placeholder="Enter name JD">
@@ -84,32 +84,65 @@
             time_24hr: true
         });
 
-        // Lấy param trên URL
+        // Lấy param từ URL
         const urlParams = new URLSearchParams(window.location.search);
         const gmailParam = urlParams.get('gmail');
-        const emailFromUrl = decodeURIComponent(gmailParam);
-
-        // In ra email lấy được từ URL
+        const emailFromUrl = decodeURIComponent(gmailParam || '');
         console.log('Email từ URL:', emailFromUrl);
 
-        // Hàm fetch data và đổ vào form
+        // Fetch dữ liệu và đổ vào form
         async function fetchAndFillData() {
-            const response = await fetch('http://localhost:8000/get_email');
-            const result = await response.json(); // { data: [...] }
-            const data = result.data;
+            try {
+                const response = await fetch('http://localhost:8000/get_email');
+                const result = await response.json(); // { data: [...] }
+                const data = result.data;
 
-            // Tìm email trùng khớp
-            const matched = data.find(item => item.email === emailFromUrl);
-
-            if (matched) {
-                document.getElementById('name').value = matched.name_job;
-                document.getElementById('time').value = matched.time;
-                document.getElementById('email').value = matched.email;
-            } else {
+                const matched = data.find(item => item.email === emailFromUrl);
+                if (matched) {
+                    document.getElementById('name').value = matched.name_job;
+                    document.getElementById('time').value = matched.time;
+                    document.getElementById('email').value = matched.email;
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
             }
         }
 
         fetchAndFillData();
+
+        // Xử lý khi bấm gửi email
+        document.getElementById('emailForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const time = document.getElementById('time').value;
+            const email = document.getElementById('email').value;
+
+            const data = {
+                name_job: name,
+                time: time,
+                email: email
+            };
+
+            console.log('Dữ liệu gửi:', data);
+
+            fetch('http://localhost:8000/send_email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log('Success:', result);
+                alert('Email sent successfully!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to send email.');
+            });
+        });
     </script>
 </body>
 

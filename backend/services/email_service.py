@@ -13,3 +13,7 @@ async def fetch_email():
     except Exception as e:
         return JSONResponse(content={"message": f"Lỗi: {str(e)}"}, status_code=500)
 
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+
+
